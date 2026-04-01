@@ -26,3 +26,12 @@ export async function getCurrentCompanyId(): Promise<string | null> {
 
   return memberships?.[0]?.company_id ?? null
 }
+
+/**
+ * Throws an error if no company context is found.
+ */
+export async function getCurrentCompanyIdOrThrow(): Promise<string> {
+  const companyId = await getCurrentCompanyId()
+  if (!companyId) throw new Error('Company context is required')
+  return companyId
+}

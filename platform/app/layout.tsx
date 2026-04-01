@@ -28,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/portal">Portal</Link>
               <Link href="/portal/conversations">Conversaciones</Link>
               <Link href="/portal/pipeline">Pipeline</Link>
+              <Link href="/portal/ayuda">Ayuda</Link>
               <Link href="/estrategia">1.000 clientes</Link>
               <Link href="/login">Login</Link>
             </nav>
