@@ -7,7 +7,4 @@ compatibility_flags = ["nodejs_compat"]
 enabled = true
 
 [vars]
-NEXT_PUBLIC_SITE_URL = "https://tu-dominio-en-cloudflare.pages.dev"
-
-[triggers]
-crons = ["*/30 * * * *"]
+NEXT_PUBLIC_SITE_URL = "https://agentgrid.digitalsaasfactory.com"
