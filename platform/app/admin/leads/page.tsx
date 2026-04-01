@@ -1,4 +1,6 @@
 import { requireAdminUser } from '@/lib/auth';
+
+export const runtime = 'edge';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
 export default async function AdminLeadsPage() {

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getCurrentCompanyIdOrThrow } from '@/lib/company'
 
+export const runtime = 'edge';
+
 const STAGE_PROBABILITIES: Record<string, number> = {
   new: 10,
   qualified: 25,

@@ -2,6 +2,8 @@ import { PricingCard } from '@/components/pricing-card';
 import { SectionTitle } from '@/components/section-title';
 import { plans } from '@/lib/plans';
 
+export const runtime = 'edge';
+
 export default function PricingPage() {
   return (
     <main className="container-shell py-16">

@@ -4,6 +4,8 @@ import { getSupabaseAdminClient } from '@/lib/supabase';
 import { getCurrentUserProfile, userCanAccessCompany } from '@/lib/tenant';
 import { sendWhatsAppMessage } from '@/lib/whatsapp';
 
+export const runtime = 'edge';
+
 const schema = z.object({
   companyId: z.string().uuid(),
   to: z.string().min(8),

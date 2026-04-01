@@ -2,6 +2,8 @@ import { Suspense } from 'react';
 import { AuthForm } from '@/components/auth-form';
 import { SectionTitle } from '@/components/section-title';
 
+export const runtime = 'edge';
+
 export default function LoginPage() {
   return (
     <main className="container-shell grid gap-12 py-16 lg:grid-cols-[1fr_0.9fr]">

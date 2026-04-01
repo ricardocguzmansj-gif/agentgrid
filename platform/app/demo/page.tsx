@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { SectionTitle } from '@/components/section-title';
 import { videoScenes } from '@/lib/content';
 
+export const runtime = 'edge';
+
 export default function DemoPage() {
   return (
     <main className="container-shell py-16">

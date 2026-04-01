@@ -3,6 +3,8 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { getExecutiveSummary } from "@/lib/reporting";
 import { getCurrentCompanyIdOrThrow } from "@/lib/company";
 
+export const runtime = 'edge';
+
 export async function GET() {
   try {
     const companyId = await getCurrentCompanyIdOrThrow();
@@ -79,7 +81,7 @@ export async function GET() {
     });
 
     const bytes = await pdf.save();
-    return new NextResponse(Buffer.from(bytes), {
+    return new NextResponse(bytes as any, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": 'attachment; filename="reporte-ejecutivo.pdf"',

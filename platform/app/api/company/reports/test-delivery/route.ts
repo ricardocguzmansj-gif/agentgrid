@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServiceSupabase, deliverSubscription } from '@/lib/report-delivery';
 import { getCurrentCompanyIdOrThrow } from '@/lib/company';
 
+export const runtime = 'edge';
+
 export async function POST(request: NextRequest) {
   try {
     const companyId = await getCurrentCompanyIdOrThrow();

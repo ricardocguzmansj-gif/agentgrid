@@ -4,6 +4,8 @@ import { getSupabaseAdminClient } from '@/lib/supabase';
 import { generateAIResponse } from '@/lib/ai';
 import { getCurrentUserProfile, userCanAccessCompany } from '@/lib/tenant';
 
+export const runtime = 'edge';
+
 const schema = z.object({
   companyId: z.string().uuid(),
   agentId: z.string().uuid().optional(),

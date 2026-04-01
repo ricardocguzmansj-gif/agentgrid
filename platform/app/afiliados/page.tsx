@@ -1,6 +1,8 @@
 import { AffiliateForm } from '@/components/affiliate-form';
 import { SectionTitle } from '@/components/section-title';
 
+export const runtime = 'edge';
+
 const bullets = [
   '30% de comisión mensual recurrente.',
   'Link único con tracking por cookie y lead.',

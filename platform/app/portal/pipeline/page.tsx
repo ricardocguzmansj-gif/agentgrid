@@ -2,6 +2,8 @@ import SalesPipelineKanban from '@/components/sales-pipeline-kanban'
 import { getSupabaseServerClient } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
 
+export const runtime = 'edge';
+
 export default async function PortalPipelinePage() {
   const supabase = await getSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()

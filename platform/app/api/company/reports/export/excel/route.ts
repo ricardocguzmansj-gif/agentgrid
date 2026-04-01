@@ -3,6 +3,8 @@ import * as XLSX from "xlsx";
 import { getExecutiveSummary } from "@/lib/reporting";
 import { getCurrentCompanyIdOrThrow } from "@/lib/company";
 
+export const runtime = 'edge';
+
 export async function GET() {
   try {
     const companyId = await getCurrentCompanyIdOrThrow();
@@ -41,8 +43,8 @@ export async function GET() {
       "Revenue",
     );
 
-    const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
-    return new NextResponse(buffer, {
+    const buffer = XLSX.write(workbook, { type: "array", bookType: "xlsx" });
+    return new NextResponse(buffer as any, {
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "Content-Disposition": 'attachment; filename="reporte-ejecutivo.xlsx"',

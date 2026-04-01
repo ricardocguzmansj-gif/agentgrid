@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { requireAdminUser } from '@/lib/auth';
 import { getAdminDashboardData } from '@/lib/admin-data';
 
+export const runtime = 'edge';
+
 function money(value: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0);
 }

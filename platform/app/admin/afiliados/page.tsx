@@ -1,6 +1,8 @@
 import { requireAdminUser } from '@/lib/auth';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
+export const runtime = 'edge';
+
 function money(value: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value || 0);
 }

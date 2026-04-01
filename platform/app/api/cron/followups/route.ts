@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { buildLeadFollowupEmail, sendEmail } from '@/lib/mailer';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
+export const runtime = 'edge';
+
 export async function POST(request: NextRequest) {
   const auth = request.headers.get('authorization');
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {

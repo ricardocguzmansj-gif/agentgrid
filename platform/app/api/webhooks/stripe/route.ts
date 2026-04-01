@@ -1,21 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'node:crypto';
 import { getPlan } from '@/lib/plans';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
-function verifyStripeSignature(rawBody: string, signature: string | null) {
+export const runtime = 'edge';
+
+async function verifyStripeSignature(rawBody: string, signature: string | null) {
   if (!process.env.STRIPE_WEBHOOK_SECRET || !signature) return true;
-  const parts = Object.fromEntries(signature.split(',').map((item) => item.split('=')));
-  const signedPayload = `${parts.t}.${rawBody}`;
-  const expected = crypto.createHmac('sha256', process.env.STRIPE_WEBHOOK_SECRET).update(signedPayload).digest('hex');
-  return expected === parts.v1;
+  
+  const parts = Object.fromEntries(signature.split(',').map((part) => part.split('=')));
+  const timestamp = parts.t;
+  const stripeSignature = parts.v1;
+  const signedPayload = `${timestamp}.${rawBody}`;
+
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(process.env.STRIPE_WEBHOOK_SECRET),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+
+  const hmacBuffer = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    encoder.encode(signedPayload)
+  );
+
+  const expectedSignature = Array.from(new Uint8Array(hmacBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+
+  return expectedSignature === stripeSignature;
 }
 
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
   const signature = request.headers.get('stripe-signature');
 
-  if (!verifyStripeSignature(rawBody, signature)) {
+  if (!(await verifyStripeSignature(rawBody, signature))) {
     return NextResponse.json({ error: 'Firma inválida' }, { status: 400 });
   }
 

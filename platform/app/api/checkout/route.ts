@@ -4,6 +4,8 @@ import { createCheckoutSession } from '@/lib/checkout';
 import { getPlan } from '@/lib/plans';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
+export const runtime = 'edge';
+
 const schema = z.object({
   planId: z.enum(['starter', 'pro', 'scale']),
   billingCycle: z.enum(['monthly', 'annual']).default('monthly'),

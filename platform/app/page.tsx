@@ -5,6 +5,8 @@ import { products } from '@/lib/content';
 import { plans } from '@/lib/plans';
 import { PricingCard } from '@/components/pricing-card';
 
+export const runtime = 'edge';
+
 const benefits = [
   'Convierte visitas en demos con una landing pensada para cerrar ventas B2B.',
   'Captura leads en Supabase con validación Cloudflare Turnstile y tracking por campaña.',
