@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import * as XLSX from "xlsx";
 import { getExecutiveSummary } from "@/lib/reporting";
 import { getCurrentCompanyIdOrThrow } from "@/lib/company";
 
@@ -7,6 +6,7 @@ export const runtime = 'edge';
 
 export async function GET() {
   try {
+    const XLSX = await import("xlsx");
     const companyId = await getCurrentCompanyIdOrThrow();
     const summary = await getExecutiveSummary(companyId);
 

@@ -21,7 +21,11 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  try {
+    await supabase.auth.getUser();
+  } catch {
+    // Silently ignore auth errors — don't crash the request
+  }
 
   const ref = request.nextUrl.searchParams.get('ref');
   if (ref) {

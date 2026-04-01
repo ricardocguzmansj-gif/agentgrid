@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { getExecutiveSummary } from "@/lib/reporting";
 import { getCurrentCompanyIdOrThrow } from "@/lib/company";
 
@@ -7,6 +6,7 @@ export const runtime = 'edge';
 
 export async function GET() {
   try {
+    const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
     const companyId = await getCurrentCompanyIdOrThrow();
     const summary = await getExecutiveSummary(companyId);
 
