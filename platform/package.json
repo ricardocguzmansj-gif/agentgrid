@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "pages:build": "opennextjs-cloudflare build && rm -rf .deploy && mkdir .deploy && cp -r .open-next/assets/* .deploy/ && cp -r .open-next/cloudflare .open-next/middleware .open-next/server-functions .open-next/.build .deploy/ && cp .open-next/worker.js .deploy/_worker.js",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "pages:build": "opennextjs-cloudflare build && shx rm -rf .deploy && shx mkdir -p .deploy && shx cp -r .open-next/assets/* .deploy/ && shx cp -r .open-next/cloudflare .open-next/middleware .open-next/server-functions .open-next/.build .deploy/ && shx cp .open-next/worker.js .deploy/_worker.js",
+    "preview": "npm run pages:build && opennextjs-cloudflare preview",
+    "deploy": "npm run pages:build && opennextjs-cloudflare deploy",
     "start": "next start",
     "lint": "next lint"
   },
@@ -33,6 +33,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "esbuild": "0.27.4",
+    "shx": "^0.4.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
   }
