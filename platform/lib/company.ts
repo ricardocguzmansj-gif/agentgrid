@@ -1,0 +1,28 @@
+import { cookies } from 'next/headers'
+import { getSupabaseServer } from './supabase-server'
+
+/**
+ * Gets the current company ID from the user's session cookie.
+ * The portal sets a `dsf_company_id` cookie when the user selects a company.
+ * Falls back to the first company the authenticated user is a member of.
+ */
+export async function getCurrentCompanyId(): Promise<string | null> {
+  // 1. Check cookie
+  const cookieStore = await cookies()
+  const fromCookie = cookieStore.get('dsf_company_id')?.value
+  if (fromCookie) return fromCookie
+
+  // 2. Fallback: get from user's memberships
+  const supabase = getSupabaseServer()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: memberships } = await supabase
+    .from('company_memberships')
+    .select('company_id')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
+
+  return memberships?.[0]?.company_id ?? null
+}

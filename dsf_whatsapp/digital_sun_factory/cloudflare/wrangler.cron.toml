@@ -1,0 +1,9 @@
+name = "digital-sun-followups"
+main = "cloudflare/cron-worker.ts"
+compatibility_date = "2026-03-31"
+
+[triggers]
+crons = ["*/30 * * * *"]
+
+[vars]
+SITE_URL = "https://example.com"

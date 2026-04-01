@@ -1,0 +1,63 @@
+version: '3.9'
+services:
+  api:
+    build: ./backend
+    container_name: agentgrid_api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env.example
+    depends_on:
+      - db
+      - redis
+
+  worker:
+    build: ./backend
+    container_name: agentgrid_worker
+    command: celery -A app.workers.celery_app.celery_app worker --loglevel=info
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env.example
+    depends_on:
+      - db
+      - redis
+
+  frontend:
+    image: node:22-alpine
+    container_name: agentgrid_frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./frontend:/app
+    environment:
+      - VITE_API_BASE=http://localhost:8000/api/v1
+      - VITE_WS_BASE=ws://localhost:8000
+    depends_on:
+      - api
+
+  db:
+    image: postgres:16
+    container_name: agentgrid_db
+    environment:
+      POSTGRES_DB: agentgrid
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: agentgrid_redis
+    ports:
+      - '6379:6379'
+
+volumes:
+  pgdata:

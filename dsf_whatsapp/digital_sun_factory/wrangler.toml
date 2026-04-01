@@ -1,0 +1,18 @@
+name = "digital-sun-saas-factory"
+main = ".open-next/worker.js"
+compatibility_date = "2026-03-31"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[observability]
+enabled = true
+
+[vars]
+NEXT_PUBLIC_SITE_URL = "https://example.com"
+
+[triggers]
+crons = ["*/30 * * * *"]

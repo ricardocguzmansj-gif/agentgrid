@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgentGrid Pro</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #141b34;
+        --line: #293253;
+        --text: #eef2ff;
+        --muted: #a5b0d6;
+        --brand: #69a7ff;
+        --brand2: #72f1d2;
+        --danger: #ff7b7b;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Inter, system-ui, Arial, sans-serif; background: radial-gradient(circle at top left, #152349 0, #0b1020 55%); color: var(--text);}
+      a { color: inherit; }
+      input, textarea, select, button {
+        font: inherit;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: #0e1530;
+        color: var(--text);
+        padding: 12px 14px;
+      }
+      button { cursor: pointer; background: linear-gradient(90deg, var(--brand), var(--brand2)); color: #081018; font-weight: 700; border: none; }
+      button.secondary { background: transparent; color: var(--text); border: 1px solid var(--line);}
+      .page { max-width: 1240px; margin: 0 auto; padding: 32px 20px 60px; }
+      .hero { display: grid; gap: 16px; grid-template-columns: 1.4fr 1fr; align-items: center; margin-bottom: 28px; }
+      .heroCard, .panel { background: rgba(20,27,52,0.94); border: 1px solid var(--line); border-radius: 22px; padding: 22px; box-shadow: 0 24px 60px rgba(0,0,0,0.26);}
+      .badge { display: inline-block; padding: 8px 10px; border-radius: 999px; border: 1px solid #2a4670; color: #c7d6ff; font-size: 12px; }
+      .title { font-size: 46px; line-height: 1.05; margin: 0 0 10px; }
+      .subtitle { font-size: 17px; color: var(--muted); line-height: 1.6; margin: 0; }
+      .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; }
+      .stack { display: grid; gap: 20px; }
+      .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .kpi { background: #0e1530; border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+      .kpi strong { display: block; font-size: 28px; margin-bottom: 6px; }
+      .sectionTitle { margin: 0 0 14px; font-size: 20px; }
+      .list { display: grid; gap: 12px; }
+      .row { display: grid; gap: 10px; }
+      .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .plan { padding: 18px; border-radius: 18px; border: 1px solid var(--line); background: #0e1530; }
+      .plan h4 { margin: 0 0 8px; font-size: 18px; }
+      .plan .price { font-size: 34px; font-weight: 700; margin: 0 0 10px; }
+      .muted { color: var(--muted); }
+      .small { font-size: 13px; }
+      .agentItem, .runItem { background: #0e1530; border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+      .agentItem h4, .runItem h4 { margin: 0 0 6px; }
+      .chip { display: inline-block; padding: 6px 8px; border-radius: 999px; font-size: 12px; border: 1px solid var(--line); margin-right: 6px; color: #d5deff;}
+      pre { white-space: pre-wrap; background: #091022; border: 1px solid var(--line); border-radius: 14px; padding: 14px; color: #d8e3ff; max-height: 220px; overflow: auto;}
+      .danger { color: var(--danger); }
+      @media (max-width: 960px) {
+        .hero, .grid, .plans { grid-template-columns: 1fr; }
+        .kpis { grid-template-columns: 1fr; }
+        .row2 { grid-template-columns: 1fr; }
+        .title { font-size: 36px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
