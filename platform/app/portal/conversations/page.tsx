@@ -1,5 +1,7 @@
 import AdvancedConversationsCRM from '@/components/advanced-conversations-crm'
 
+export const runtime = 'edge';
+
 export default function PortalConversationsPage() {
   return (
     <main className="min-h-screen bg-black p-6 text-white">

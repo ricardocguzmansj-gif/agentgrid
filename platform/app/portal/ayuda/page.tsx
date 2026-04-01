@@ -1,5 +1,7 @@
 import { BookOpen, Bot, MessageSquare, Workflow, Kanban, ShieldCheck, Zap, Link as LucideLink } from 'lucide-react'
 
+export const runtime = 'edge';
+
 export default function HelpPage() {
   return (
     <main className="container-shell py-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
