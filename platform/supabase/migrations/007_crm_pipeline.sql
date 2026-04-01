@@ -112,44 +112,44 @@ alter table public.sales_pipelines enable row level security;
 alter table public.sales_stages enable row level security;
 alter table public.crm_opportunities enable row level security;
 
-create policy if not exists "members can read crm_tags"
+create policy "members can read crm_tags"
 on public.crm_tags for select
 using (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can insert crm_tags"
+create policy "members can insert crm_tags"
 on public.crm_tags for insert
 with check (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can read conversation_tags"
+create policy "members can read conversation_tags"
 on public.conversation_tags for select
 using (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can manage conversation_tags"
+create policy "members can manage conversation_tags"
 on public.conversation_tags for all
 using (company_id in (select public.current_company_ids()))
 with check (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can read conversation_notes"
+create policy "members can read conversation_notes"
 on public.conversation_notes for select
 using (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can insert conversation_notes"
+create policy "members can insert conversation_notes"
 on public.conversation_notes for insert
 with check (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can read sales_pipelines"
+create policy "members can read sales_pipelines"
 on public.sales_pipelines for select
 using (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can read sales_stages"
+create policy "members can read sales_stages"
 on public.sales_stages for select
 using (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can read crm_opportunities"
+create policy "members can read crm_opportunities"
 on public.crm_opportunities for select
 using (company_id in (select public.current_company_ids()));
 
-create policy if not exists "members can manage crm_opportunities"
+create policy "members can manage crm_opportunities"
 on public.crm_opportunities for all
 using (company_id in (select public.current_company_ids()))
 with check (company_id in (select public.current_company_ids()));
