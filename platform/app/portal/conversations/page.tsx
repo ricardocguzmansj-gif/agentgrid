@@ -1,6 +1,5 @@
 import AdvancedConversationsCRM from '@/components/advanced-conversations-crm'
 
-export const runtime = 'edge';
 
 export default function PortalConversationsPage() {
   return (

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServer } from '@/lib/supabase-server'
 import { getCurrentCompanyId } from '@/lib/company'
 
-export const runtime = 'edge';
 
 export async function GET() {
   const companyId = await getCurrentCompanyId()

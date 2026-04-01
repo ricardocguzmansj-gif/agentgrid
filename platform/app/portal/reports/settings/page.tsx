@@ -2,7 +2,6 @@ import { getSupabaseServerClient } from "@/lib/supabase";
 import { redirect } from "next/navigation";
 import { ReportSubscriptionsManager } from "@/components/report-subscriptions-manager";
 
-export const runtime = 'edge';
 
 export default async function ReportSettingsPage() {
   const supabase = await getSupabaseServerClient();

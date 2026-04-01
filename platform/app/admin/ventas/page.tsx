@@ -1,6 +1,5 @@
 import { requireAdminUser } from '@/lib/auth';
 
-export const runtime = 'edge';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
 function money(value: number) {

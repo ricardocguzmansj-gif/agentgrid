@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getCurrentCompanyIdOrThrow } from '@/lib/company'
 
-export const runtime = 'edge';
 
 function adminSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPlan } from '@/lib/plans';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
-export const runtime = 'edge';
 
 async function verifyStripeSignature(rawBody: string, signature: string | null) {
   if (!process.env.STRIPE_WEBHOOK_SECRET || !signature) return true;

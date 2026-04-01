@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { deliverSubscription, getServiceSupabase } from '@/lib/report-delivery';
 
-export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {

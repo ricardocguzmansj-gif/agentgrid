@@ -4,7 +4,6 @@ import { getSupabaseAdminClient, getSupabaseServerClient } from '@/lib/supabase'
 import { isAdminEmail } from '@/lib/auth';
 import { getAgentTemplates } from '@/lib/agent-templates';
 
-export const runtime = 'edge';
 
 const schema = z.object({
   name: z.string().min(2),

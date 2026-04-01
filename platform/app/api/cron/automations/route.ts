@@ -4,7 +4,6 @@ import { generateAIResponse } from '@/lib/ai';
 import { sendEmail } from '@/lib/mailer';
 import { sendWhatsAppMessage } from '@/lib/whatsapp';
 
-export const runtime = 'edge';
 
 export async function GET() {
   try {

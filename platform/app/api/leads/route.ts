@@ -4,7 +4,6 @@ import { buildLeadFollowupEmail, sendEmail } from '@/lib/mailer';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 import { verifyTurnstile } from '@/lib/turnstile';
 
-export const runtime = 'edge';
 
 const schema = z.object({
   firstName: z.string().min(2),

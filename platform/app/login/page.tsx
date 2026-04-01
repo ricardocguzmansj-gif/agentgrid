@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import { AuthForm } from '@/components/auth-form';
 import { SectionTitle } from '@/components/section-title';
 
-export const runtime = 'edge';
 
 export default function LoginPage() {
   return (

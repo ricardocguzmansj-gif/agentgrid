@@ -1,7 +1,6 @@
 import { SectionTitle } from '@/components/section-title';
 import { strategyPlan } from '@/lib/content';
 
-export const runtime = 'edge';
 
 export default function StrategyPage() {
   return (

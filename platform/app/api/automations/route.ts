@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 import { getCurrentUserProfile, userCanAccessCompany } from '@/lib/tenant';
 
-export const runtime = 'edge';
 
 const schema = z.object({
   companyId: z.string().uuid(),

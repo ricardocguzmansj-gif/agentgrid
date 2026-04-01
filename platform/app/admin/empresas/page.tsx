@@ -3,7 +3,6 @@ import { requireAdminUser } from '@/lib/auth';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 import { CompanyAdminForm } from '@/components/company-admin-form';
 
-export const runtime = 'edge';
 
 export default async function AdminEmpresasPage() {
   await requireAdminUser();

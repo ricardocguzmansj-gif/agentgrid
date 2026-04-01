@@ -6,7 +6,6 @@ import { WhatsAppChannelForm } from '@/components/whatsapp-channel-form';
 import { getSupabaseAdminClient, getSupabaseServerClient } from '@/lib/supabase';
 import { getCompanyBranding, getCurrentUserProfile, getUserCompanies } from '@/lib/tenant';
 
-export const runtime = 'edge';
 
 export default async function PortalPage({ searchParams }: { searchParams?: Promise<{ company?: string }> }) {
   const resolved = await searchParams;

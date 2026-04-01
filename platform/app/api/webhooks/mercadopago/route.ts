@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPlan } from '@/lib/plans';
 import { getSupabaseAdminClient } from '@/lib/supabase';
 
-export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {

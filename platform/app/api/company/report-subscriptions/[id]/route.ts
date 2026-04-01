@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServiceSupabase, calculateNextRunAt } from '@/lib/report-delivery';
 import { getCurrentCompanyIdOrThrow } from '@/lib/company';
 
-export const runtime = 'edge';
 
 type Params = { params: Promise<{ id: string }> };
 

@@ -4,7 +4,6 @@ import { getCompanyByPhoneNumberId, getDefaultAgentForCompany } from '@/lib/tena
 import { generateAIResponse } from '@/lib/ai'
 import { sendWhatsAppMessage } from '@/lib/whatsapp'
 
-export const runtime = 'edge';
 
 type InboundMsg = {
   from: string

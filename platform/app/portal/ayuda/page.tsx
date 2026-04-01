@@ -1,6 +1,5 @@
 import { BookOpen, Bot, MessageSquare, Workflow, Kanban, ShieldCheck, Zap, Link as LucideLink } from 'lucide-react'
 
-export const runtime = 'edge';
 
 export default function HelpPage() {
   return (

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getExecutiveSummary } from "@/lib/reporting";
 import { getCurrentCompanyIdOrThrow } from "@/lib/company";
 
-export const runtime = 'edge';
 
 export async function GET() {
   try {

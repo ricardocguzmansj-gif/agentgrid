@@ -2,7 +2,6 @@ import ExecutiveDashboard from "@/components/executive-dashboard";
 import { getSupabaseServerClient } from "@/lib/supabase";
 import { redirect } from "next/navigation";
 
-export const runtime = 'edge';
 
 export default async function ReportsPage() {
   const supabase = await getSupabaseServerClient();
