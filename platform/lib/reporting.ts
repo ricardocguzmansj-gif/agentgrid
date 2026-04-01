@@ -97,12 +97,18 @@ export async function getExecutiveSummary(companyId: string) {
     byStageMap.set(key, current);
   }
 
-  const byOperatorMap = new Map<string, { operator: string; won_amount: number; open_amount: number }>();
+  const byOperatorMap = new Map<string, { operator: string; won_amount: number; open_amount: number; won_count: number; open_count: number }>();
   for (const opp of opportunities) {
     const operator = opp.owner_name;
-    const current = byOperatorMap.get(operator) ?? { operator, won_amount: 0, open_amount: 0 };
-    if (opp.is_won) current.won_amount += Number(opp.amount || 0);
-    else if (!opp.is_lost) current.open_amount += Number(opp.amount || 0);
+    const current = byOperatorMap.get(operator) ?? { operator, won_amount: 0, open_amount: 0, won_count: 0, open_count: 0 };
+    if (opp.is_won) {
+      current.won_amount += Number(opp.amount || 0);
+      current.won_count += 1;
+    }
+    else if (!opp.is_lost) {
+      current.open_amount += Number(opp.amount || 0);
+      current.open_count += 1;
+    }
     byOperatorMap.set(operator, current);
   }
 
@@ -113,8 +119,10 @@ export async function getExecutiveSummary(companyId: string) {
     currency,
     kpis: {
       open_pipeline_amount: openPipelineAmount,
+      open_pipeline_count: openOpps.length,
       weighted_forecast_amount: weightedForecastAmount,
       won_this_month_amount: wonThisMonthAmount,
+      won_this_month_count: wonThisMonth.length,
       lost_this_month_count: lostThisMonth.length,
       active_conversations: activeConversations,
       unassigned_conversations: unassignedConversations,

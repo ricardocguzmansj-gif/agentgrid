@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   Area,
   AreaChart,
@@ -140,7 +141,10 @@ export default function ExecutiveDashboard() {
             Revenue, forecast, desempeño comercial y actividad operativa de la empresa en una sola vista.
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
+          <Link href={"/portal/reports/settings" as any} className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 flex items-center justify-center">
+            Reportes automáticos
+          </Link>
           <button onClick={exportPdf} className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white">
             Exportar PDF
           </button>

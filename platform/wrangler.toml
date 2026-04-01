@@ -12,7 +12,7 @@ binding = "ASSETS"
 enabled = true
 
 [vars]
-NEXT_PUBLIC_SITE_URL = "https://example.com"
+NEXT_PUBLIC_SITE_URL = "https://tu-dominio-en-cloudflare.pages.dev"
 
 [triggers]
 crons = ["*/30 * * * *"]

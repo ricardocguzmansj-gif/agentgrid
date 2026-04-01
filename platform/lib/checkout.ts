@@ -9,7 +9,7 @@ export type CheckoutPayload = {
 };
 
 function getBaseUrl() {
-  return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  return process.env.NEXT_PUBLIC_SITE_URL || process.env.CF_PAGES_URL || 'http://localhost:3000';
 }
 
 function getStripePriceId(planId: PlanId, billingCycle: 'monthly' | 'annual') {

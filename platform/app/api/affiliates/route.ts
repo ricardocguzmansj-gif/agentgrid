@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.CF_PAGES_URL || 'http://localhost:3000';
     return NextResponse.json({
       ok: true,
       affiliateCode,
