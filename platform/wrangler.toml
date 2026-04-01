@@ -1,5 +1,4 @@
 name = "agentgrid"
-account_id = "befa01a8c82c4520572c3b5c6aa89dea"
 pages_build_output_dir = ".vercel/output/static"
 compatibility_date = "2026-03-31"
 compatibility_flags = ["nodejs_compat"]
