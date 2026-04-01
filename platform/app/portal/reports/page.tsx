@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import ExecutiveDashboard from "@/components/executive-dashboard";
 import { getSupabaseServerClient } from "@/lib/supabase";
 import { redirect } from "next/navigation";

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { BookOpen, Bot, MessageSquare, Workflow, Kanban, ShieldCheck, Zap, Link as LucideLink } from 'lucide-react'
 
 

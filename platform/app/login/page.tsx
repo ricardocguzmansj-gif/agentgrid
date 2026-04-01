@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { Suspense } from 'react';
 import { AuthForm } from '@/components/auth-form';
 import { SectionTitle } from '@/components/section-title';

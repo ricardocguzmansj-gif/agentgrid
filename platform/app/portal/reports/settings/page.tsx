@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getSupabaseServerClient } from "@/lib/supabase";
 import { redirect } from "next/navigation";
 import { ReportSubscriptionsManager } from "@/components/report-subscriptions-manager";

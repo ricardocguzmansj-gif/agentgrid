@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import AdvancedConversationsCRM from '@/components/advanced-conversations-crm'
 
 

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { PricingCard } from '@/components/pricing-card';
 import { SectionTitle } from '@/components/section-title';
 import { plans } from '@/lib/plans';

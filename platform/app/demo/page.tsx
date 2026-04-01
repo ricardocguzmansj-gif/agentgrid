@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { SectionTitle } from '@/components/section-title';
 import { videoScenes } from '@/lib/content';

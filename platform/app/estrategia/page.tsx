@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { SectionTitle } from '@/components/section-title';
 import { strategyPlan } from '@/lib/content';
 

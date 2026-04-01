@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { LeadForm } from '@/components/lead-form';
 import { SectionTitle } from '@/components/section-title';

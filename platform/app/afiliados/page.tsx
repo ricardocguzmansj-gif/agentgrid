@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { AffiliateForm } from '@/components/affiliate-form';
 import { SectionTitle } from '@/components/section-title';
 
