@@ -5,3 +5,5 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 NEXT_PUBLIC_SITE_URL = "https://agentgrid.digitalsaasfactory.com"
+NEXT_PUBLIC_SUPABASE_URL = "https://fuowxxwirqogphtxwqcr.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_wUSC2pHIsW53g67efNEILg_1SKY7N5m"
