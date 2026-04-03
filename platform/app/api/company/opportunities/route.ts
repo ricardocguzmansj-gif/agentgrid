@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSupabaseServer } from '@/lib/supabase-server'
+import { getSupabaseServerClient } from '@/lib/supabase'
 import { getCurrentCompanyId } from '@/lib/company'
 
 
@@ -7,7 +7,7 @@ export async function GET() {
   const companyId = await getCurrentCompanyId()
   if (!companyId) return NextResponse.json({ error: 'company_not_selected' }, { status: 400 })
 
-  const supabase = getSupabaseServer()
+  const supabase = await getSupabaseServerClient()
   const { data, error } = await supabase
     .from('crm_opportunities')
     .select('*, stage:sales_stages(*)')
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'missing_fields' }, { status: 400 })
   }
 
-  const supabase = getSupabaseServer()
+  const supabase = await getSupabaseServerClient()
   const { data: firstStage } = await supabase
     .from('sales_stages')
     .select('id')

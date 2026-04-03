@@ -14,8 +14,11 @@ export async function getCurrentCompanyId(): Promise<string | null> {
 
   // 2. Fallback: get from user's memberships
   const supabase = await getSupabaseServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
+  const { data: { user }, error } = await supabase.auth.getUser()
+  if (!user) {
+    console.error('[getCurrentCompanyId] No user session found during fallback. Auth Error:', error?.message);
+    return null
+  }
 
   const { data: memberships } = await supabase
     .from('company_memberships')

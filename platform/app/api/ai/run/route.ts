@@ -15,8 +15,13 @@ export async function POST(request: NextRequest) {
   try {
     const payload = schema.parse(await request.json());
     const profile = await getCurrentUserProfile();
-    if (!profile) return NextResponse.json({ error: 'No autenticado.' }, { status: 401 });
+    if (!profile) {
+      console.error('[AI Run] No profile found. Auth session might be missing or getUser failed.');
+      return NextResponse.json({ error: 'No autenticado.' }, { status: 401 });
+    }
+    
     if (!(await userCanAccessCompany(payload.companyId))) {
+      console.error('[AI Run] Profile', profile.id, 'does not have access to company', payload.companyId);
       return NextResponse.json({ error: 'No autorizado para esta empresa.' }, { status: 403 });
     }
 
