@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSupabaseServer } from '@/lib/supabase-server'
+import { getSupabaseAdminClient } from '@/lib/supabase'
 import { getCurrentCompanyId } from '@/lib/company'
 
 
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   }
 
   const conversationId = req.nextUrl.searchParams.get('conversationId')
-  const supabase = getSupabaseServer()
+  const supabase = getSupabaseAdminClient()
 
   if (conversationId) {
     const [{ data: messages, error: messagesError }, { data: notes, error: notesError }, { data: tags, error: tagsError }, { data: opportunity, error: oppError }] = await Promise.all([

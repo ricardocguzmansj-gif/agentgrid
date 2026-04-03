@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { getSupabaseServer } from './supabase-server'
+import { getSupabaseServerClient } from './supabase'
 
 /**
  * Gets the current company ID from the user's session cookie.
@@ -13,7 +13,7 @@ export async function getCurrentCompanyId(): Promise<string | null> {
   if (fromCookie) return fromCookie
 
   // 2. Fallback: get from user's memberships
-  const supabase = getSupabaseServer()
+  const supabase = await getSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
