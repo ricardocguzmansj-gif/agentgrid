@@ -11,8 +11,8 @@ const nextConfig: NextConfig = {
           {
             key: 'Content-Security-Policy',
             value: [
-              // Scripts: self + Next.js inline + Turnstile + eval for Next.js
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
+              // Scripts: self + Next.js inline + Turnstile + Cloudflare analytics + eval for Next.js
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://static.cloudflareinsights.com",
               // Styles
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               // Fonts
@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
               // Images
               "img-src 'self' data: blob: https:",
               // Connections: Supabase + Cloudflare
-              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com",
+              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://cloudflareinsights.com",
               // Frames: Turnstile runs in an iframe
               "frame-src https://challenges.cloudflare.com",
               // Fallback

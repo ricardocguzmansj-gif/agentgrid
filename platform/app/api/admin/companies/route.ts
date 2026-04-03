@@ -20,15 +20,40 @@ const schema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('[Admin Companies] Starting company creation...');
+    
     const authClient = await getSupabaseServerClient();
-    const { data: { user } } = await authClient.auth.getUser();
+    const { data: { user }, error: authError } = await authClient.auth.getUser();
+    
+    console.log('[Admin Companies] Auth result:', { 
+      email: user?.email || 'NO_USER', 
+      authError: authError?.message || 'none' 
+    });
+    
     if (!user?.email || !isAdminEmail(user.email)) {
-      return NextResponse.json({ error: 'No autorizado.' }, { status: 403 });
+      return NextResponse.json({ 
+        error: `No autorizado. Email: ${user?.email || 'sin sesión'}. ¿Estás logueado?` 
+      }, { status: 403 });
     }
-    const payload = schema.parse(await request.json());
+
+    let payload;
+    try {
+      payload = schema.parse(await request.json());
+    } catch (validationError: any) {
+      if (validationError instanceof z.ZodError) {
+        const issues = validationError.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
+        console.error('[Admin Companies] Validation error:', issues);
+        return NextResponse.json({ error: `Error de validación: ${issues}` }, { status: 400 });
+      }
+      throw validationError;
+    }
+    
+    console.log('[Admin Companies] Payload validated:', { name: payload.name, slug: payload.slug });
+    
     const supabase = getSupabaseAdminClient();
 
     const { data: profile } = await supabase.from('profiles').select('id').eq('email', user.email).single();
+    console.log('[Admin Companies] Profile found:', profile?.id || 'NOT_FOUND');
 
     const { data: company, error } = await supabase
       .from('companies')
@@ -42,15 +67,20 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      if (error.code === '23505' && error.message.includes('slug')) {
+      console.error('[Admin Companies] Insert error:', error.code, error.message);
+      if (error.code === '23505') {
         return NextResponse.json({ error: `El slug "${payload.slug}" ya está en uso por otra empresa.` }, { status: 400 });
       }
-      throw error;
+      return NextResponse.json({ error: `Error de BD: ${error.message}` }, { status: 400 });
     }
     
-    if (!company) throw new Error('No se pudo crear la empresa');
+    if (!company) {
+      return NextResponse.json({ error: 'No se pudo crear la empresa (sin datos)' }, { status: 500 });
+    }
 
-    await supabase.from('company_settings').upsert({
+    console.log('[Admin Companies] Company created:', company.id);
+
+    const { error: settingsError } = await supabase.from('company_settings').upsert({
       company_id: company.id,
       brand_name: payload.brandName || payload.name,
       industry: payload.industry,
@@ -59,6 +89,10 @@ export async function POST(request: NextRequest) {
       support_email: payload.supportEmail || null,
       support_phone: payload.supportPhone || null,
     });
+    
+    if (settingsError) {
+      console.error('[Admin Companies] Settings error:', settingsError.message);
+    }
 
     if (payload.ownerEmail) {
       const { data: ownerProfile } = await supabase.from('profiles').select('id').eq('email', payload.ownerEmail).maybeSingle();
@@ -76,19 +110,16 @@ export async function POST(request: NextRequest) {
       created_by: profile?.id || null,
     }));
 
-    await supabase.from('ai_agents').insert(templates);
-
-    return NextResponse.json({ ok: true, company });
-  } catch (error: any) {
-    console.error('[Admin Companies API Error]', error);
-    
-    if (error instanceof z.ZodError) {
-      const issues = error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
-      return NextResponse.json({ error: `Error de validación: ${issues}` }, { status: 400 });
+    const { error: agentsError } = await supabase.from('ai_agents').insert(templates);
+    if (agentsError) {
+      console.error('[Admin Companies] Agents error:', agentsError.message);
     }
 
-    // Capture specific Supabase errors if any leaked through
+    console.log('[Admin Companies] Company creation complete:', company.slug);
+    return NextResponse.json({ ok: true, company });
+  } catch (error: any) {
+    console.error('[Admin Companies] UNHANDLED ERROR:', error?.message, error?.code, error?.stack);
     const msg = error?.message || 'Error inesperado al crear la empresa.';
-    return NextResponse.json({ error: msg }, { status: 400 });
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
