@@ -26,19 +26,21 @@ export async function generateAIResponse(options: {
   temperature?: number;
 }) {
   const client = getOpenAIClient();
-  const response = await client.responses.create({
-    model: options.model || process.env.OPENAI_MODEL || 'gpt-4.1-mini',
-    instructions: options.systemPrompt,
-    input: options.input,
+  const response = await client.chat.completions.create({
+    model: options.model || process.env.OPENAI_MODEL || 'gpt-4o-mini',
+    messages: [
+      { role: 'system', content: options.systemPrompt },
+      { role: 'user', content: options.input }
+    ],
     temperature: typeof options.temperature === 'number' ? options.temperature : 0.3,
-    max_output_tokens: 1200,
+    max_tokens: 1200,
   });
 
   return {
     id: response.id,
-    text: response.output_text || '',
+    text: response.choices[0]?.message?.content || '',
     model: response.model,
-    inputTokens: response.usage?.input_tokens || 0,
-    outputTokens: response.usage?.output_tokens || 0,
+    inputTokens: response.usage?.prompt_tokens || 0,
+    outputTokens: response.usage?.completion_tokens || 0,
   };
 }
