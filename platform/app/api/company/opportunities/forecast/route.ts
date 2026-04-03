@@ -1,16 +1,11 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseAdminClient } from '@/lib/supabase'
 import { getCurrentCompanyIdOrThrow } from '@/lib/company'
-
-
-function adminSupabase() {
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
-}
 
 export async function GET() {
   try {
     const companyId = await getCurrentCompanyIdOrThrow()
-    const supabase = adminSupabase()
+    const supabase = getSupabaseAdminClient()
 
     // 1. Get opportunities from crm_opportunities
     const { data, error } = await supabase

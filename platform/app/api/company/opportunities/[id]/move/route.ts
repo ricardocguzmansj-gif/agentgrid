@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseAdminClient } from '@/lib/supabase'
 import { getCurrentCompanyIdOrThrow } from '@/lib/company'
-
 
 const STAGE_PROBABILITIES: Record<string, number> = {
   new: 10,
@@ -10,10 +9,6 @@ const STAGE_PROBABILITIES: Record<string, number> = {
   negotiation: 75,
   won: 100,
   lost: 0,
-}
-
-function adminSupabase() {
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -27,7 +22,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     }
 
     const companyId = await getCurrentCompanyIdOrThrow()
-    const supabase = adminSupabase()
+    const supabase = getSupabaseAdminClient()
 
     // 1. Verify existence and company
     const { data: existing, error: existingError } = await supabase

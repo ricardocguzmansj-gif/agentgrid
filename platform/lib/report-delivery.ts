@@ -1,4 +1,5 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { getSupabaseAdminClient } from '@/lib/supabase';
+import { type SupabaseClient } from '@supabase/supabase-js';
 import { renderExecutiveSummaryHtml, renderExecutiveSummaryText, type ExecutiveSummaryPayload } from './report-render';
 import { sendEmailReport } from './channels/email';
 import { sendWhatsAppReport } from './channels/whatsapp';
@@ -21,17 +22,9 @@ export type ReportSubscriptionRow = {
   is_active: boolean;
 };
 
+// Reutilizamos el cliente centralizado que ya tiene limpieza de BOM
 export function getServiceSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!url || !key) {
-    throw new Error('Falta NEXT_PUBLIC_SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY');
-  }
-
-  return createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
+  return getSupabaseAdminClient();
 }
 
 export async function buildExecutiveSummary(

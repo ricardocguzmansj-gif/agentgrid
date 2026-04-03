@@ -1,14 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
-
-function adminClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) throw new Error("Faltan credenciales de Supabase");
-  return createClient(url, key, { auth: { persistSession: false } });
-}
+import { getSupabaseAdminClient } from "@/lib/supabase";
 
 export async function getExecutiveSummary(companyId: string) {
-  const supabase = adminClient();
+  const supabase = getSupabaseAdminClient();
 
   // Obtenemos oportunidades, etapas y dueños en paralelo para armar la lógica local de forma segura
   const [oppsRes, convRes, stagesRes, profilesRes] = await Promise.all([
