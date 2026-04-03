@@ -41,7 +41,14 @@ export async function POST(request: NextRequest) {
       .select('id, name, slug, plan, status')
       .single();
 
-    if (error || !company) throw error ?? new Error('No se pudo crear la empresa');
+    if (error) {
+      if (error.code === '23505' && error.message.includes('slug')) {
+        return NextResponse.json({ error: `El slug "${payload.slug}" ya está en uso por otra empresa.` }, { status: 400 });
+      }
+      throw error;
+    }
+    
+    if (!company) throw new Error('No se pudo crear la empresa');
 
     await supabase.from('company_settings').upsert({
       company_id: company.id,
@@ -72,13 +79,16 @@ export async function POST(request: NextRequest) {
     await supabase.from('ai_agents').insert(templates);
 
     return NextResponse.json({ ok: true, company });
-  } catch (error) {
+  } catch (error: any) {
     console.error('[Admin Companies API Error]', error);
+    
     if (error instanceof z.ZodError) {
       const issues = error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
-      return NextResponse.json({ error: `Validación fallida (${issues})` }, { status: 400 });
+      return NextResponse.json({ error: `Error de validación: ${issues}` }, { status: 400 });
     }
-    const msg = error instanceof Error ? error.message : (error as any)?.message || 'No se pudo crear la empresa.';
+
+    // Capture specific Supabase errors if any leaked through
+    const msg = error?.message || 'Error inesperado al crear la empresa.';
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 }
