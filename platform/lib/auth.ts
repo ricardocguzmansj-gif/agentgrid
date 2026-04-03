@@ -11,7 +11,11 @@ function normalizeList(value: string | undefined) {
 export function isAdminEmail(email?: string | null) {
   if (!email) return false;
   const allowed = normalizeList(process.env.ADMIN_EMAILS);
-  return allowed.includes(email.toLowerCase());
+  
+  // Fallback para asegurar acceso en producción si falla la env var
+  const fallbackAdmins = ['ricardocguzman@gmail.com'];
+  
+  return allowed.includes(email.toLowerCase()) || fallbackAdmins.includes(email.toLowerCase());
 }
 
 export async function requireAdminUser() {
