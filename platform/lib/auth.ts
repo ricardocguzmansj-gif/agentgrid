@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation';
 import { getSupabaseServerClient } from '@/lib/supabase';
+import { sanitizeEnv } from './env';
 
 function normalizeList(value: string | undefined) {
-  return (value || '')
+  const clean = sanitizeEnv(value);
+  return (clean || '')
     .split(',')
     .map((item) => item.trim().toLowerCase())
     .filter(Boolean);

@@ -1,7 +1,8 @@
 import OpenAI from 'openai';
+import { sanitizeEnv } from './env';
 
 export function getOpenAIClient() {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = sanitizeEnv(process.env.OPENAI_API_KEY);
   if (!apiKey) {
     throw new Error('Falta OPENAI_API_KEY en el entorno.');
   }
