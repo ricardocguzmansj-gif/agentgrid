@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminEmail } from '@/lib/auth';
 import { getSupabaseServerClient } from '@/lib/supabase';
+import { sanitizeEnv } from '@/lib/env';
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,25 +12,25 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     }
 
+    const rawSBRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const cleanSBRole = sanitizeEnv(rawSBRole);
+
     const debug = {
       SUPABASE_SERVICE_ROLE_KEY: {
-        exists: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-        length: process.env.SUPABASE_SERVICE_ROLE_KEY?.length || 0,
-        prefix: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 5) || 'none',
-        suffix: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring((process.env.SUPABASE_SERVICE_ROLE_KEY?.length || 0) - 5) || 'none',
-        hasWhitespace: /\s/.test(process.env.SUPABASE_SERVICE_ROLE_KEY || ''),
+        raw_exists: !!rawSBRole,
+        raw_length: rawSBRole?.length || 0,
+        raw_prefix: rawSBRole?.substring(0, 5) || 'none',
+        clean_exists: !!cleanSBRole,
+        clean_length: cleanSBRole?.length || 0,
+        clean_prefix: cleanSBRole?.substring(0, 5) || 'none',
+        hasBOM: rawSBRole?.startsWith('\uFEFF'),
+        hasWhitespace: /\s/.test(rawSBRole || ''),
       },
       OPENAI_API_KEY: {
         exists: !!process.env.OPENAI_API_KEY,
         length: process.env.OPENAI_API_KEY?.length || 0,
         prefix: process.env.OPENAI_API_KEY?.substring(0, 5) || 'none',
-        hasWhitespace: /\s/.test(process.env.OPENAI_API_KEY || ''),
-      },
-      TURNSTILE_SECRET_KEY: {
-        exists: !!process.env.TURNSTILE_SECRET_KEY,
-        length: process.env.TURNSTILE_SECRET_KEY?.length || 0,
-        prefix: process.env.TURNSTILE_SECRET_KEY?.substring(0, 5) || 'none',
-        hasWhitespace: /\s/.test(process.env.TURNSTILE_SECRET_KEY || ''),
+        sanitized_prefix: sanitizeEnv(process.env.OPENAI_API_KEY)?.substring(0, 5) || 'none',
       },
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
       NODE_ENV: process.env.NODE_ENV,

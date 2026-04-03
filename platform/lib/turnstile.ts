@@ -1,5 +1,9 @@
+import { sanitizeEnv } from './env';
+
 export async function verifyTurnstile(token?: string | null, remoteip?: string | null) {
-  if (!process.env.TURNSTILE_SECRET_KEY) {
+  const secret = sanitizeEnv(process.env.TURNSTILE_SECRET_KEY);
+  
+  if (!secret) {
     return { success: true, reason: 'turnstile-disabled' };
   }
 
@@ -8,7 +12,7 @@ export async function verifyTurnstile(token?: string | null, remoteip?: string |
   }
 
   const body = new URLSearchParams({
-    secret: process.env.TURNSTILE_SECRET_KEY,
+    secret: secret,
     response: token,
   });
 
