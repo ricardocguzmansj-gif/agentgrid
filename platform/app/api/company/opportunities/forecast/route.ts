@@ -13,7 +13,15 @@ export async function GET() {
       .select('*, stage:sales_stages(name)')
       .eq('company_id', companyId)
 
-    if (error) throw error
+    if (error) {
+      console.error('[Forecast API Error] Supabase:', error)
+      return NextResponse.json({ 
+        error: error.message, 
+        details: error.details, 
+        hint: error.hint,
+        code: error.code 
+      }, { status: 500 })
+    }
 
     // 2. Map stages and filter
     const STAGE_MAP: Record<string, string> = {

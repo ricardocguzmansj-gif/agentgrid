@@ -14,7 +14,15 @@ export async function GET() {
       .eq('company_id', companyId)
       .order('updated_at', { ascending: false })
 
-    if (error) throw error
+    if (error) {
+      console.error('[Kanban API Error] Supabase:', error)
+      return NextResponse.json({ 
+        error: error.message, 
+        details: error.details, 
+        hint: error.hint,
+        code: error.code 
+      }, { status: 500 })
+    }
 
     // 2. Map stages to keys expected by the frontend
     const STAGE_MAP: Record<string, string> = {
