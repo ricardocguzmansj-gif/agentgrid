@@ -60,8 +60,8 @@ export function AuthForm() {
         </button>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3" placeholder="Email corporativo" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3" placeholder="Contraseña" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input autoComplete="username" className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3" placeholder="Email corporativo" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input autoComplete="current-password" className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3" placeholder="Contraseña" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         <button className="button-primary w-full disabled:opacity-70" disabled={loading}>
           {loading ? 'Procesando...' : mode === 'login' ? 'Entrar al panel' : 'Crear cuenta'}
         </button>

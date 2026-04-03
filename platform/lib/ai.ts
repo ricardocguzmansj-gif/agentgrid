@@ -5,7 +5,17 @@ export function getOpenAIClient() {
   if (!apiKey) {
     throw new Error('Falta OPENAI_API_KEY en el entorno.');
   }
-  return new OpenAI({ apiKey });
+
+  const isOpenRouter = apiKey.startsWith('sk-or-');
+  
+  return new OpenAI({
+    apiKey,
+    baseURL: isOpenRouter ? 'https://openrouter.ai/api/v1' : undefined,
+    defaultHeaders: isOpenRouter ? {
+      'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+      'X-Title': 'AgentGrid Platform',
+    } : undefined
+  });
 }
 
 export async function generateAIResponse(options: {
