@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Script from 'next/script';
 
 type FormState = {
   firstName: string;
@@ -62,7 +63,11 @@ export function LeadForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="card p-6 sm:p-8">
+    <>
+      {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer strategy="afterInteractive" />
+      )}
+      <form onSubmit={onSubmit} className="card p-6 sm:p-8">
       <div className="grid gap-4 sm:grid-cols-2">
         <input className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3" placeholder="Nombre" value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} required />
         <input className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3" placeholder="Apellido" value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} required />
@@ -73,8 +78,8 @@ export function LeadForm() {
       </div>
       <div className="mt-5 space-y-4">
         {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ? (
-          <div className="rounded-2xl border border-dashed border-white/20 p-4 text-sm text-white/60">
-            Agregá tu widget de Cloudflare Turnstile usando la site key pública. El backend ya valida el token.
+          <div className="flex justify-center py-2">
+            <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} data-theme="dark"></div>
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-white/20 p-4 text-sm text-white/60">
@@ -87,5 +92,6 @@ export function LeadForm() {
         {message ? <p className="text-sm text-cyan-200">{message}</p> : null}
       </div>
     </form>
+    </>
   );
 }

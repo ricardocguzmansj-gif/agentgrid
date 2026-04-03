@@ -177,7 +177,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container-shell py-16">
+      <section id="demo-form" className="container-shell scroll-mt-24 py-16">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="space-y-6">
             <SectionTitle
@@ -198,7 +198,7 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-          <div id="demo-form">
+          <div>
             <LeadForm />
           </div>
         </div>
