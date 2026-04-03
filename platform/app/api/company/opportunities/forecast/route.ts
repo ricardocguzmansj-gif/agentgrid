@@ -12,14 +12,34 @@ export async function GET() {
     const companyId = await getCurrentCompanyIdOrThrow()
     const supabase = adminSupabase()
 
+    // 1. Get opportunities from crm_opportunities
     const { data, error } = await supabase
-      .from('opportunities')
-      .select('id,amount,stage,probability,owner_user_id')
+      .from('crm_opportunities')
+      .select('*, stage:sales_stages(name)')
       .eq('company_id', companyId)
 
     if (error) throw error
 
-    const openItems = (data || []).filter((row: any) => !['won', 'lost'].includes(row.stage))
+    // 2. Map stages and filter
+    const STAGE_MAP: Record<string, string> = {
+      'nuevo lead': 'new',
+      'calificado': 'qualified',
+      'propuesta enviada': 'proposal',
+      'negociación': 'negotiation',
+      'ganado': 'won',
+      'perdido': 'lost',
+    };
+
+    const mappedData = (data || []).map((row: any) => {
+      const dbStageName = row.stage?.name?.toLowerCase() || ''
+      return {
+        ...row,
+        stage: STAGE_MAP[dbStageName] || 'new',
+        probability: row.probability || 0,
+      }
+    })
+
+    const openItems = mappedData.filter((row: any) => !['won', 'lost'].includes(row.stage))
 
     const totalOpenAmount = openItems.reduce((acc: number, row: any) => acc + Number(row.amount || 0), 0)
     const weightedForecastAmount = openItems.reduce(
@@ -72,6 +92,7 @@ export async function GET() {
       by_owner: Array.from(byOwnerMap.values()).sort((a, b) => b.weighted_amount - a.weighted_amount),
     })
   } catch (error: any) {
+    console.error('[Forecast API Error]', error)
     return NextResponse.json({ error: error?.message || 'Unexpected error' }, { status: 500 })
   }
 }
