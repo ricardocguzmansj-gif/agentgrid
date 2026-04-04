@@ -22,17 +22,20 @@ export default async function PortalPage({ searchParams }: { searchParams?: Prom
   let agents: any[] = [];
   let workflows: any[] = [];
   let logs: any[] = [];
+  let aiRuns: any[] = [];
   let branding: any = null;
   if (activeCompany?.id) {
-    const [agentsRes, workflowsRes, logsRes, brandingRes] = await Promise.all([
+    const [agentsRes, workflowsRes, logsRes, aiRunsRes, brandingRes] = await Promise.all([
       admin.from('ai_agents').select('id, name, model, is_active').eq('company_id', activeCompany.id).order('created_at', { ascending: false }),
       admin.from('automation_workflows').select('id, name, status, target_email, target_phone, channel_type, last_run_at').eq('company_id', activeCompany.id).order('created_at', { ascending: false }),
       admin.from('automation_logs').select('id, status, summary, created_at').eq('company_id', activeCompany.id).order('created_at', { ascending: false }).limit(5),
+      admin.from('ai_runs').select('id, input_text, output_text, created_at, agent:ai_agents(name)').eq('company_id', activeCompany.id).order('created_at', { ascending: false }).limit(5),
       getCompanyBranding(activeCompany.id),
     ]);
     agents = agentsRes.data || [];
     workflows = workflowsRes.data || [];
     logs = logsRes.data || [];
+    aiRuns = aiRunsRes.data || [];
     branding = brandingRes || null;
   }
 
@@ -91,7 +94,7 @@ export default async function PortalPage({ searchParams }: { searchParams?: Prom
             </div>
           </section>
 
-          <section className="grid gap-6 lg:grid-cols-2">
+          <section className="grid gap-6 lg:grid-cols-3">
             <div className="card p-6">
               <p className="text-sm uppercase tracking-[0.2em]" style={{ color: accent }}>Automatizaciones</p>
               <div className="mt-4 space-y-3">
@@ -106,7 +109,7 @@ export default async function PortalPage({ searchParams }: { searchParams?: Prom
             </div>
 
             <div className="card p-6">
-              <p className="text-sm uppercase tracking-[0.2em]" style={{ color: accent }}>Últimos logs IA</p>
+              <p className="text-sm uppercase tracking-[0.2em]" style={{ color: accent }}>Logs de Automatización</p>
               <div className="mt-4 space-y-4">
                 {logs.length ? logs.map((log) => (
                   <div key={log.id} className="rounded-2xl border border-white/10 bg-black/20 p-4">
@@ -114,6 +117,22 @@ export default async function PortalPage({ searchParams }: { searchParams?: Prom
                     <p className="mt-2 whitespace-pre-wrap text-white/80">{log.summary}</p>
                   </div>
                 )) : <p className="text-white/60">Todavía no hay logs de automatizaciones.</p>}
+              </div>
+            </div>
+
+            <div className="card p-6">
+              <p className="text-sm uppercase tracking-[0.2em]" style={{ color: primary }}>Historial del Playground</p>
+              <div className="mt-4 space-y-4">
+                {aiRuns.length ? aiRuns.map((run) => (
+                  <div key={run.id} className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                    <div className="flex justify-between items-center text-xs uppercase tracking-[0.2em] text-white/40">
+                      <span>{new Date(run.created_at).toLocaleString('es-AR')}</span>
+                      <span>{run.agent?.name}</span>
+                    </div>
+                    <p className="mt-2 text-sm font-medium text-white/90">U: {run.input_text.slice(0, 100)}{run.input_text.length > 100 ? '...' : ''}</p>
+                    <p className="mt-1 text-sm text-white/70 whitespace-pre-wrap border-l-2 border-white/20 pl-2 ml-1">IA: {run.output_text?.slice(0, 150)}{run.output_text?.length > 150 ? '...' : ''}</p>
+                  </div>
+                )) : <p className="text-white/60">No hay interacciones manuales registradas.</p>}
               </div>
             </div>
           </section>

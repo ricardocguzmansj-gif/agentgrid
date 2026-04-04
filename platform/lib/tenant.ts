@@ -101,3 +101,30 @@ export async function getDefaultAgentForCompany(companyId: string) {
 
   return data;
 }
+
+/**
+ * Public function to find a company by its URL slug.
+ * Returns the company, its settings, and its active agents.
+ * Used for the public landing pages.
+ */
+export async function getCompanyBySlug(slug: string) {
+  const admin = getSupabaseAdminClient();
+  const { data } = await admin
+    .from('companies')
+    .select(`
+      id, name, slug, plan, status,
+      company_settings(brand_name, industry, primary_color, accent_color, logo_url, support_email, support_phone, website_url),
+      ai_agents(id, name, model, is_active)
+    `)
+    .eq('slug', slug)
+    .eq('status', 'active')
+    .maybeSingle();
+
+  if (!data) return null;
+
+  return {
+    ...data,
+    settings: Array.isArray(data.company_settings) ? data.company_settings[0] : (data.company_settings || {}),
+    agents: (data.ai_agents || []).filter((a: any) => a.is_active)
+  };
+}

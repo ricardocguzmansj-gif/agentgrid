@@ -8,7 +8,11 @@ import { getCurrentUserProfile, userCanAccessCompany } from '@/lib/tenant';
 const schema = z.object({
   companyId: z.string().uuid(),
   agentId: z.string().uuid().optional(),
-  message: z.string().min(5),
+  message: z.string().min(1),
+  history: z.array(z.object({
+    role: z.enum(['user', 'assistant']),
+    content: z.string(),
+  })).optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -69,6 +73,7 @@ export async function POST(request: NextRequest) {
     const response = await generateAIResponse({
       systemPrompt: agent.system_prompt,
       input: payload.message,
+      history: payload.history,
       model: agent.model,
       temperature: Number(agent.temperature || 0.3),
     });

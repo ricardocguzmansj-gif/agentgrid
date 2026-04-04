@@ -22,16 +22,24 @@ export function getOpenAIClient() {
 export async function generateAIResponse(options: {
   systemPrompt: string;
   input: string;
+  history?: { role: 'user' | 'assistant'; content: string }[];
   model?: string;
   temperature?: number;
 }) {
   const client = getOpenAIClient();
+  const messages: any[] = [
+    { role: 'system', content: options.systemPrompt },
+  ];
+  
+  if (options.history && options.history.length > 0) {
+    messages.push(...options.history);
+  }
+  
+  messages.push({ role: 'user', content: options.input });
+
   const response = await client.chat.completions.create({
     model: options.model || process.env.OPENAI_MODEL || 'gpt-4o-mini',
-    messages: [
-      { role: 'system', content: options.systemPrompt },
-      { role: 'user', content: options.input }
-    ],
+    messages,
     temperature: typeof options.temperature === 'number' ? options.temperature : 0.3,
     max_tokens: 1200,
   });
